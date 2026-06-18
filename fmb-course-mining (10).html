@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabri Meba – Secretariado Social de Mão de Obra e Formação</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a1628;--navy2:#0d1f3c;--blue:#0d7bc4;--cyan:#00b4d8;
+  --white:#ffffff;--gray:rgba(255,255,255,0.55);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(10,22,40,0.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,180,216,0.18);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:66px;
+}
+.nav-brand{display:flex;flex-direction:column;line-height:1.1;text-decoration:none}
+.nav-brand .nb1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;letter-spacing:1px;color:#fff}
+.nav-brand .nb2{font-size:9px;letter-spacing:1.8px;text-transform:uppercase;color:var(--cyan)}
+/* Desktop nav */
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{
+  text-decoration:none;color:rgba(255,255,255,0.65);
+  font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+  padding:8px 14px;border-radius:4px;transition:all .2s;
+}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,0.05)}
+.nav-cta{background:var(--blue)!important;color:#fff!important;padding:8px 18px!important}
+.nav-cta:hover{background:var(--cyan)!important;color:var(--navy)!important}
+
+/* Hamburger button - hidden on desktop */
+.hamburger{
+  flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;cursor:pointer;width:42px;height:42px;
+  border-radius:6px;background:rgba(0,180,216,.12);
+  border:1px solid rgba(0,180,216,.3);flex-shrink:0;
+  display:flex;
+}
+.hamburger span{width:22px;height:2px;background:#fff;border-radius:2px;transition:.3s;display:block}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(0px,7px)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(0px,-7px)}
+
+/* Mobile drawer */
+.nav-drawer{
+  display:none;
+  position:fixed;top:66px;left:0;right:0;bottom:0;
+  background:rgba(8,18,35,0.99);
+  z-index:199;flex-direction:column;
+  padding:32px 6%;overflow-y:auto;
+}
+.nav-drawer.open{display:flex}
+.nav-drawer a{
+  display:block;color:rgba(255,255,255,.85);text-decoration:none;
+  font-size:20px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07);
+  transition:color .2s;
+}
+.nav-drawer a:hover{color:var(--cyan)}
+.nav-drawer .drawer-cta{
+  margin-top:20px;background:var(--blue);color:#fff!important;
+  text-align:center;padding:16px!important;border-radius:6px;
+  border-bottom:none!important;font-size:18px!important;
+}
+.nav-drawer .drawer-cta:hover{background:var(--cyan);color:var(--navy)!important}
+
+/* PAGE SYSTEM */
+.page{display:none;padding-top:66px}
+.page.active{display:block}
+
+/* HERO */
+.hero{
+  min-height:calc(100vh - 66px);
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:60px 5% 80px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%,rgba(13,123,196,.18) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 70% at 0% 100%,rgba(0,180,216,.1) 0%,transparent 60%),
+    linear-gradient(155deg,#0a1628 0%,#0d1f3c 60%,#0a2a45 100%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,180,216,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,.04) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+.hero-inner{position:relative;z-index:2;max-width:700px}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);
+  border-radius:40px;padding:5px 16px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);
+  margin-bottom:24px;
+}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(2.8rem,10vw,6rem);
+  font-weight:800;line-height:1;letter-spacing:-1px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.hero h1 em{font-style:normal;color:var(--cyan)}
+.hero-sub{font-size:1rem;color:var(--gray);line-height:1.8;max-width:520px;margin-bottom:36px}
+.hero-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;margin-top:60px;max-width:700px;
+}
+.hero-card{
+  padding:20px;
+  border:1px solid rgba(0,180,216,.15);
+  border-radius:8px;
+  background:rgba(0,180,216,.04);
+  cursor:pointer;transition:all .25s;
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+}
+.hero-card:hover{background:rgba(0,180,216,.12);border-color:rgba(0,180,216,.4);transform:translateY(-3px)}
+.hero-card-icon{font-size:2rem}
+.hero-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.hero-card p{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+.hero-card .arrow{margin-top:auto;font-size:18px;color:var(--cyan);font-weight:700}
+
+/* SECTION BASE */
+.sec{padding:80px 5%}
+.sec-alt{background:var(--navy2)}
+.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-label::before{content:'';width:28px;height:1.5px;background:var(--cyan)}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-.5px;margin-bottom:16px}
+.sec-desc{color:var(--gray);max-width:540px;line-height:1.8;font-size:.97rem;margin-bottom:48px}
+
+/* BACK BTN */
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;
+  cursor:pointer;margin-bottom:32px;padding:8px 0;
+  background:none;border:none;font-family:'Barlow',sans-serif;font-weight:600;
+}
+.back-btn:hover{color:#fff}
+
+/* SERVICE CARDS grid */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.svc-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;padding:24px 22px;
+  transition:all .25s;cursor:pointer;
+}
+.svc-card:hover{background:rgba(0,180,216,.07);border-color:rgba(0,180,216,.3);transform:translateY(-2px)}
+.svc-card::before{content:'';display:block;width:28px;height:2px;background:var(--cyan);margin-bottom:14px}
+.svc-card p{font-size:13px;font-weight:500;line-height:1.5;color:rgba(255,255,255,.82)}
+
+/* FORMATION LIST */
+.form-cat{margin-bottom:44px}
+.form-cat-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--cyan);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.form-cat-title::after{content:'';flex:1;height:1px;background:rgba(0,180,216,.2)}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.form-item{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:6px;padding:14px 18px;
+  font-size:13px;font-weight:500;color:rgba(255,255,255,.8);
+  line-height:1.4;transition:all .2s;cursor:default;
+  display:flex;align-items:flex-start;gap:8px;
+}
+.form-item::before{content:'›';color:var(--cyan);font-weight:700;flex-shrink:0;margin-top:0}
+.form-item:hover{background:rgba(0,180,216,.06);border-color:rgba(0,180,216,.25)}
+
+/* MACHINES GRID */
+.mach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+.mach-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;padding:20px 16px;
+  text-align:center;transition:all .25s;
+}
+.mach-card:hover{background:rgba(0,180,216,.07);border-color:rgba(0,180,216,.3)}
+.mach-icon{font-size:2.4rem;margin-bottom:10px}
+.mach-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:4px}
+.mach-type{font-size:11px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase}
+
+/* TRANSPORT */
+.transport-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:40px}
+.tcat{
+  border:1px solid rgba(0,180,216,.15);
+  border-radius:8px;padding:28px 24px;
+  background:rgba(13,123,196,.05);
+  position:relative;overflow:hidden;
+}
+.tcat::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.tcat-icon{font-size:2rem;margin-bottom:14px}
+.tcat h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;text-transform:uppercase;margin-bottom:10px}
+.tcat ul{list-style:none}
+.tcat li{font-size:13px;color:rgba(255,255,255,.65);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:8px}
+.tcat li::before{content:'›';color:var(--cyan);font-weight:700;flex-shrink:0}
+
+/* DESTINATIONS */
+.dest-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.dest-pill{
+  background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.2);
+  border-radius:40px;padding:7px 18px;
+  font-size:13px;font-weight:500;color:rgba(255,255,255,.82);
+  display:flex;align-items:center;gap:6px;
+}
+
+/* FORM */
+.contact-layout{display:flex;flex-direction:column;gap:40px}
+@media(min-width:861px){.contact-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:start}}
+.req-form{
+  background:rgba(255,255,255,.03);border:1px solid rgba(0,180,216,.15);
+  border-radius:10px;padding:40px 36px;max-width:100%;
+}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.fg label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.fg input,.fg textarea,.fg select{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:4px;padding:11px 14px;color:#fff;
+  font-family:'Barlow',sans-serif;font-size:14px;outline:none;
+  transition:border-color .2s;width:100%;
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:rgba(0,180,216,.5)}
+.fg textarea{resize:vertical;min-height:90px}
+.fg select option{background:#0d1f3c}
+.btn-p{
+  background:var(--blue);color:#fff;
+  padding:13px 32px;border-radius:4px;
+  font-weight:600;font-size:14px;border:none;cursor:pointer;
+  font-family:'Barlow',sans-serif;letter-spacing:.5px;
+  transition:all .25s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-p:hover{background:var(--cyan);color:var(--navy);transform:translateY(-2px)}
+.btn-o{
+  border:1.5px solid rgba(0,180,216,.5);color:var(--cyan);
+  padding:13px 32px;border-radius:4px;font-weight:600;font-size:14px;
+  text-decoration:none;display:inline-block;
+  transition:all .25s;background:transparent;cursor:pointer;
+  font-family:'Barlow',sans-serif;
+}
+.btn-o:hover{background:rgba(0,180,216,.1)}
+
+/* SUCCESS */
+.success-box{
+  display:none;background:rgba(0,180,216,.08);
+  border:1px solid rgba(0,180,216,.3);border-radius:8px;
+  padding:20px 24px;margin-top:16px;
+  font-size:14px;color:var(--cyan);
+}
+
+/* CONTACT INFO */
+.cinfo{display:flex;gap:16px;margin-bottom:28px;align-items:flex-start}
+.cinfo-icon{width:42px;height:42px;flex-shrink:0;background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.cinfo-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:3px}
+.cinfo-val{font-size:14px;color:rgba(255,255,255,.85);font-weight:500}
+
+/* FOOTER */
+footer{background:#060e1a;padding:40px 5%;border-top:1px solid rgba(0,180,216,.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.fbrand strong{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;display:block}
+.fbrand span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan)}
+.flinks{display:flex;gap:20px;flex-wrap:wrap}
+.flinks a{color:rgba(255,255,255,.35);text-decoration:none;font-size:12px;transition:color .2s}
+.flinks a:hover{color:var(--cyan)}
+.fcopy{font-size:11px;color:rgba(255,255,255,.2);width:100%;text-align:center;border-top:1px solid rgba(255,255,255,.05);padding-top:18px;margin-top:8px}
+
+/* WHATSAPP */
+.wa-fab{
+  position:fixed;bottom:24px;right:24px;z-index:300;
+  width:54px;height:54px;border-radius:50%;background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.4);
+  transition:transform .2s;
+}
+.wa-fab:hover{transform:scale(1.1)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.page.active .fade1{animation:fadeUp .5s .05s both}
+.page.active .fade2{animation:fadeUp .5s .15s both}
+.page.active .fade3{animation:fadeUp .5s .25s both}
+.page.active .fade4{animation:fadeUp .5s .35s both}
+
+/* MOBILE */
+@media(max-width:860px){
+  .nav-links{display:none!important}
+  .hamburger{display:flex!important}
+  .hero-cards{grid-template-columns:1fr 1fr}
+  .frow{grid-template-columns:1fr}
+  .req-form{padding:24px 20px}
+  .mach-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="javascript:void(0)" onclick="showPage('home')">
+    <span class="nb1">FMB COURSE</span>
+    <span class="nb2">Secretariado Social · Mão de Obra · Formação</span>
+  </a>
+
+  <!-- Hamburger icon (mobile only) -->
+  <div class="hamburger" id="ham" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile drawer menu -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="javascript:void(0)" onclick="showPage('home')">Início</a>
+  <a href="javascript:void(0)" onclick="showPage('secretariado')">Secretariado</a>
+  <a href="javascript:void(0)" onclick="showPage('formacao')">Formação</a>
+  <a href="javascript:void(0)" onclick="showPage('transporte')">Transporte</a>
+  <a href="javascript:void(0)" onclick="showPage('recrutamento')">Recrutamento</a>
+  <a href="javascript:void(0)" onclick="showPage('pedido')" class="drawer-cta">Fazer Pedido</a>
+</div>
+
+<!-- ======================== HOME ======================== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="badge fade1">Luanda · Angola</div>
+      <h1 class="fade2">FMB COURSE</h1>
+      <p class="hero-sub fade3">Secretariado Social de Mão de Obra e Formação. Prestamos serviços nas áreas de secretariado, formação profissional e transporte de mercadoria.</p>
+      <div class="fade4" style="display:flex;gap:14px;flex-wrap:wrap">
+        <button class="btn-p" onclick="showPage('pedido')">Fazer Pedido</button>
+        <a href="https://wa.me/244955008164" target="_blank" class="btn-o" style="display:inline-flex;align-items:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.51 5.815L0 24l6.337-1.499A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.369l-.36-.213-3.722.879.937-3.626-.235-.373A9.773 9.773 0 012.182 12c0-5.419 4.399-9.818 9.818-9.818 5.42 0 9.818 4.399 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+
+      <div class="hero-cards fade4" style="animation-delay:.45s">
+        <div class="hero-card" onclick="showPage('secretariado')">
+          <div class="hero-card-icon">📋</div>
+          <h3>Secretariado</h3>
+          <p>Serviços de secretaria, documentação e apoio social</p>
+          <div class="arrow">→</div>
+        </div>
+        <div class="hero-card" onclick="showPage('formacao')">
+          <div class="hero-card-icon">🎓</div>
+          <h3>Formação</h3>
+          <p>Cursos profissionais na área industrial e técnica</p>
+          <div class="arrow">→</div>
+        </div>
+        <div class="hero-card" onclick="showPage('transporte')">
+          <div class="hero-card-icon">🚛</div>
+          <h3>Transporte</h3>
+          <p>Transporte de mercadoria e logística de carga</p>
+          <div class="arrow">→</div>
+        </div>
+        <div class="hero-card" onclick="showPage('recrutamento')">
+          <div class="hero-card-icon">👷</div>
+          <h3>Recrutamento</h3>
+          <p>Recrutamento de formadores e profissionais qualificados</p>
+          <div class="arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fbrand"><strong>FMB COURSE LDA</strong><span>Secretariado Social · Mão de Obra · Formação</span></div>
+    <nav class="flinks">
+      <a href="#" onclick="showPage('secretariado')">Secretariado</a>
+      <a href="#" onclick="showPage('formacao')">Formação</a>
+      <a href="#" onclick="showPage('transporte')">Transporte</a>
+      <a href="#" onclick="showPage('pedido')">Fazer Pedido</a>
+    </nav>
+    <p class="fcopy">© 2026 FMB Course LDA · Luanda, Angola · +244 955 008 164 (Geral/Formação) · +244 993 318 318 (Recrutamento) · fabrimeba01@gmail.com</p>
+  </footer>
+</div>
+
+<!-- ======================== SECRETARIADO ======================== -->
+<div class="page" id="page-secretariado">
+  <section class="sec">
+    <button class="back-btn" onclick="showPage('home')">← Voltar ao Início</button>
+    <div class="sec-label fade1">Serviços</div>
+    <h2 class="sec-title fade2">Secretariado Social</h2>
+    <p class="sec-desc fade3">Prestamos serviços de secretariado, apoio administrativo e gestão de mão de obra para empresas e particulares em Angola.</p>
+
+    <div class="svc-grid fade4">
+      <div class="svc-card"><p>Gestão e recrutamento de mão de obra</p></div>
+      <div class="svc-card"><p>Elaboração e gestão de contratos de trabalho</p></div>
+      <div class="svc-card"><p>Processamento de salários e folha de pagamento</p></div>
+      <div class="svc-card"><p>Registo e inscrição de empresas e trabalhadores</p></div>
+      <div class="svc-card"><p>Tratamento de documentação legal e administrativa</p></div>
+      <div class="svc-card"><p>Apoio no processo de admissão de pessoal</p></div>
+      <div class="svc-card"><p>Gestão de recursos humanos e dossiers de pessoal</p></div>
+      <div class="svc-card"><p>Assistência em processos de segurança social</p></div>
+      <div class="svc-card"><p>Apoio administrativo a empresas e projectos</p></div>
+      <div class="svc-card"><p>Elaboração de relatórios e documentação técnica</p></div>
+      <div class="svc-card"><p>Tradução e preparação de documentos</p></div>
+      <div class="svc-card"><p>Agendamento de reuniões e gestão de agenda</p></div>
+      <div class="svc-card"><p>Agendamento de visto de viagem</p></div>
+    </div>
+
+    <div style="margin-top:48px">
+      <p style="color:var(--gray);font-size:.95rem;margin-bottom:20px">Precisa de algum destes serviços? Submeta o seu pedido e entraremos em contacto.</p>
+      <button class="btn-p" onclick="showPage('pedido','Secretariado')">Fazer Pedido de Secretariado →</button>
+    </div>
+  </section>
+  <footer>
+    <div class="fbrand"><strong>FMB COURSE LDA</strong><span>Secretariado Social · Mão de Obra · Formação</span></div>
+    <nav class="flinks">
+      <a href="#" onclick="showPage('home')">Início</a>
+      <a href="#" onclick="showPage('formacao')">Formação</a>
+      <a href="#" onclick="showPage('transporte')">Transporte</a>
+      <a href="#" onclick="showPage('pedido')">Fazer Pedido</a>
+    </nav>
+    <p class="fcopy">© 2026 FMB Course LDA · Luanda, Angola</p>
+  </footer>
+</div>
+
+<!-- ======================== FORMAÇÃO ======================== -->
+<div class="page" id="page-formacao">
+  <section class="sec">
+    <button class="back-btn" onclick="showPage('home')">← Voltar ao Início</button>
+    <div class="sec-label fade1">Área de Formação</div>
+    <h2 class="sec-title fade2">Cursos Profissionais</h2>
+    <p class="sec-desc fade3">Formação prática e certificada para os sectores industrial, técnico e de segurança. Cursos disponíveis nas nossas instalações ou nas do cliente.</p>
+
+    <!-- CAT 1 -->
+    <div class="form-cat fade4">
+      <div class="form-cat-title">🏗️ Operação e Condução de Equipamentos</div>
+      <div class="form-grid">
+        <div class="form-item">Operador de Empilhadora</div>
+        <div class="form-item">Operador de Grua Móvel</div>
+        <div class="form-item">Operador de Grua Offshore</div>
+        <div class="form-item">Operador de Grua Fixa / Torre</div>
+        <div class="form-item">Operador Porta-Contentor</div>
+        <div class="form-item">Operador de Retroescavadora</div>
+        <div class="form-item">Operador de Escavadora</div>
+        <div class="form-item">Operador de Niveladora</div>
+        <div class="form-item">Operador de Bulldozer</div>
+        <div class="form-item">Operador de PA Carregadora</div>
+        <div class="form-item">Operador de Caminhão Basculante</div>
+        <div class="form-item">Manobrador de Trailer / Caminhão Atrelado</div>
+        <div class="form-item">Operador de Dumper Industrial</div>
+        <div class="form-item">Condução Defensiva</div>
+        <div class="form-item">Rigger Profissional</div>
+        <div class="form-item">RiGGing e Slinging</div>
+      </div>
+    </div>
+
+    <!-- CAT 2 -->
+    <div class="form-cat">
+      <div class="form-cat-title">🔧 Área Técnica e Mecânica</div>
+      <div class="form-grid">
+        <div class="form-item">Mecânica dos Fluidos</div>
+        <div class="form-item">Hidráulica e Electro-Hidráulica</div>
+        <div class="form-item">Eletricidade Básica</div>
+        <div class="form-item">Práticas Elétricas (Electrical Skills)</div>
+        <div class="form-item">Soldadura Piping</div>
+        <div class="form-item">Gestão da Manutenção</div>
+        <div class="form-item">Trabalho em Altura</div>
+        <div class="form-item">Engenharia Mecânica – Diversas Áreas</div>
+        <div class="form-item">Área de Engenharia Civil</div>
+      </div>
+    </div>
+
+    <!-- CAT 3 -->
+    <div class="form-cat">
+      <div class="form-cat-title">⚠️ Segurança Industrial</div>
+      <div class="form-grid">
+        <div class="form-item">ATÉX. H2S</div>
+        <div class="form-item">Segurança Básica</div>
+        <div class="form-item">Segurança Industrial</div>
+        <div class="form-item">Higiene e Segurança no Trabalho</div>
+        <div class="form-item">Gestão de Riscos na Indústria Extrativa</div>
+        <div class="form-item">Avaliação e Controlo de Riscos Profissionais</div>
+        <div class="form-item">Prevenção de Riscos Ambientais na Indústria Mineira</div>
+        <div class="form-item">Prevenção de Saúde Ocupacional na Indústria Mineira</div>
+        <div class="form-item">Segurança na Manipulação de Substâncias Explosivas</div>
+        <div class="form-item">Entrada em Espaços Confinados</div>
+        <div class="form-item">Resgate em Espaços Confinados</div>
+        <div class="form-item">Permissão de Trabalho</div>
+        <div class="form-item">Segurança na Indústria Extrativa</div>
+      </div>
+    </div>
+
+    <!-- CAT 4 -->
+    <div class="form-cat">
+      <div class="form-cat-title">⚓ STCW-BST (Marítimo)</div>
+      <div class="form-grid">
+        <div class="form-item">Segurança Pessoal e Responsabilidade Social</div>
+        <div class="form-item">Primeiros Socorros</div>
+        <div class="form-item">Prevenção e Combate a Incêndios</div>
+        <div class="form-item">Técnicas Pessoais de Sobrevivência no Mar</div>
+        <div class="form-item">Security Awareness</div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+      <a href="https://wa.me/244955008164?text=Ol%C3%A1%2C%20gostaria%20de%20obter%20informa%C3%A7%C3%B5es%20sobre%20os%20cursos%20de%20forma%C3%A7%C3%A3o%20da%20Fabrimeba." target="_blank" class="btn-p" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.51 5.815L0 24l6.337-1.499A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.369l-.36-.213-3.722.879.937-3.626-.235-.373A9.773 9.773 0 012.182 12c0-5.419 4.399-9.818 9.818-9.818 5.42 0 9.818 4.399 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+        Inscrever num Curso
+      </a>
+      <span style="font-size:13px;color:var(--gray)">+244 955 008 164 · Formação presencial ou nas instalações do cliente</span>
+    </div>
+  </section>
+  <footer>
+    <div class="fbrand"><strong>FMB COURSE LDA</strong><span>Secretariado Social · Mão de Obra · Formação</span></div>
+    <nav class="flinks">
+      <a href="#" onclick="showPage('home')">Início</a>
+      <a href="#" onclick="showPage('secretariado')">Secretariado</a>
+      <a href="#" onclick="showPage('transporte')">Transporte</a>
+      <a href="#" onclick="showPage('pedido')">Fazer Pedido</a>
+    </nav>
+    <p class="fcopy">© 2026 FMB Course LDA · Luanda, Angola</p>
+  </footer>
+</div>
+
+<!-- ======================== TRANSPORTE ======================== -->
+<div class="page" id="page-transporte">
+  <section class="sec">
+    <button class="back-btn" onclick="showPage('home')">← Voltar ao Início</button>
+    <div class="sec-label fade1">Logística</div>
+    <h2 class="sec-title fade2">Transporte e<br>Logística de Carga</h2>
+    <p class="sec-desc fade3">Prestamos serviços completos de transporte de mercadoria para Angola e destinos internacionais. Contacte-nos para obter cotação personalizada.</p>
+
+    <!-- DESTINOS -->
+    <div style="margin-bottom:40px">
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;display:flex;align-items:center;gap:10px">📍 Rotas e Destinos Disponíveis <span style="flex:1;height:1px;background:rgba(0,180,216,.2);display:inline-block"></span></h3>
+      <div class="dest-grid">
+        <div class="dest-pill">🚢 Soyo – Cabinda</div>
+        <div class="dest-pill">🚢 Luanda – Cabinda</div>
+        <div class="dest-pill">🚢 Luanda – Soyo</div>
+        <div class="dest-pill">🛣️ Luanda – Luvo</div>
+        <div class="dest-pill">🛣️ Luanda – Kinshasa</div>
+        <div class="dest-pill">✈️ Luanda – Dundo</div>
+        <div class="dest-pill">✈️ Luanda – Saurimo</div>
+        <div class="dest-pill">✈️ Luanda – Luena</div>
+        <div class="dest-pill">✈️ Luanda – Catumbela</div>
+        <div class="dest-pill">✈️ Luanda – Huambo</div>
+        <div class="dest-pill">✈️ Luanda – Cabinda (Aéreo)</div>
+      </div>
+    </div>
+
+    <div class="transport-cats">
+      <!-- CARGA GERAL -->
+      <div class="tcat">
+        <div class="tcat-icon">📦</div>
+        <h3>Carga Geral</h3>
+        <ul>
+          <li>Envelopes e documentos</li>
+          <li>Carga Geral (por KG)</li>
+          <li>Carga Petrolífera (por KG)</li>
+          <li>Bagagens normais (por KG)</li>
+          <li>Peças e vidros (por KG)</li>
+          <li>Bagagens abaixo de 5 KG – preço fixo</li>
+          <li>Urnas (Adulto)</li>
+          <li>Urnas (Menor)</li>
+        </ul>
+      </div>
+
+      <!-- CONTENTORES -->
+      <div class="tcat">
+        <div class="tcat-icon">🏗️</div>
+        <h3>Contentores</h3>
+        <ul>
+          <li>Contentor 10 – Cheio</li>
+          <li>Contentor 10 – Vazio</li>
+          <li>Contentor 20 – Cheio</li>
+          <li>Contentor 20 – Vazio</li>
+          <li>Contentor 40 – Cheio</li>
+          <li>Contentor 40 – Vazio</li>
+          <li>Contentor 10 – Frigorífico Ligado</li>
+          <li>Contentor 20 – Frigorífico Ligado</li>
+          <li>Contentor 40 – Frigorífico Ligado</li>
+          <li>Contentor 40 – Porta-porta</li>
+          <li>Contentor 20 – Porta-porta</li>
+        </ul>
+      </div>
+
+      <!-- VEÍCULOS -->
+      <div class="tcat">
+        <div class="tcat-icon">🚗</div>
+        <h3>Veículos</h3>
+        <ul>
+          <li>Ligeiros (até 3.500 KG)</li>
+          <li>Ligeiros – Pickup</li>
+          <li>Pesados (3.600 a 8.900 KG)</li>
+          <li>Camião / Bus (9.000 a 13.000 KG)</li>
+          <li>Camião / Bus (14.000 a 19.500 KG)</li>
+          <li>Camião Atrelado / Reboque</li>
+        </ul>
+      </div>
+
+      <!-- MOTORIZADAS -->
+      <div class="tcat">
+        <div class="tcat-icon">🏍️</div>
+        <h3>Motorizadas</h3>
+        <ul>
+          <li>Scooter (até 170 CC)</li>
+          <li>Desportiva (171 até 450 CC)</li>
+          <li>Custom (451 até 650 CC)</li>
+          <li>Comercial (3 rodas)</li>
+        </ul>
+      </div>
+
+      <!-- MÁQUINAS -->
+      <div class="tcat">
+        <div class="tcat-icon">⚙️</div>
+        <h3>Máquinas e Equipamentos</h3>
+        <ul>
+          <li>BobCat – 3.011 kg</li>
+          <li>Mini Retroescavadeira – 6.200 kg</li>
+          <li>Retroescavadeira – 8.200 kg</li>
+          <li>Rolo Compactador Liso – 11.765 kg</li>
+          <li>Escavadeira Hidráulica – 22.100 kg</li>
+          <li>Escavadoras de Rastos</li>
+          <li>Motoniveladora</li>
+        </ul>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="tcat">
+        <div class="tcat-icon">📞</div>
+        <h3>Contacto para Cotação</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:16px">Para obter preços actualizados e personalizados para a sua carga, entre em contacto connosco:</p>
+        <ul>
+          <li>Geral / Formação: +244 955 008 164</li>
+          <li>Recrutamento: +244 993 318 318</li>
+          <li>Email: fabrimeba01@gmail.com</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EQUIPAMENTOS DESTAQUE -->
+    <div style="margin-top:60px">
+      <div class="sec-label">Equipamentos para formação</div>
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;text-transform:uppercase;margin-bottom:28px">Máquinas Disponíveis</h3>
+      <div class="mach-grid">
+        <div class="mach-card"><div class="mach-icon">🏗️</div><div class="mach-name">Empilhadora</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">⛏️</div><div class="mach-name">Escavadeira</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🔧</div><div class="mach-name">Retroescavadeira</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🏗️</div><div class="mach-name">Bulldozer</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🚧</div><div class="mach-name">Niveladora</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🚛</div><div class="mach-name">Dumper Industrial</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">📦</div><div class="mach-name">Porta-Contentor</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🏗️</div><div class="mach-name">Grua Móvel</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🚚</div><div class="mach-name">Manobrador Trailer</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🚛</div><div class="mach-name">Cam. Basculante</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">⚙️</div><div class="mach-name">Pá Carregadora</div><div class="mach-type">Equipamento</div></div>
+        <div class="mach-card"><div class="mach-icon">🏗️</div><div class="mach-name">Grua Fixa</div><div class="mach-type">Equipamento</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <p style="color:var(--gray);font-size:.95rem;margin-bottom:20px">Para obter cotação ou agendar o seu transporte, submeta o pedido abaixo.</p>
+      <button class="btn-p" onclick="showPage('pedido','Transporte')">Solicitar Cotação de Transporte →</button>
+    </div>
+  </section>
+  <footer>
+    <div class="fbrand"><strong>FMB COURSE LDA</strong><span>Secretariado Social · Mão de Obra · Formação</span></div>
+    <nav class="flinks">
+      <a href="#" onclick="showPage('home')">Início</a>
+      <a href="#" onclick="showPage('secretariado')">Secretariado</a>
+      <a href="#" onclick="showPage('formacao')">Formação</a>
+      <a href="#" onclick="showPage('pedido')">Fazer Pedido</a>
+    </nav>
+    <p class="fcopy">© 2026 FMB Course LDA · Luanda, Angola</p>
+  </footer>
+</div>
+
+<!-- ======================== PEDIDO ======================== -->
+<div class="page" id="page-pedido">
+  <section class="sec sec-alt">
+    <button class="back-btn" onclick="showPage('home')">← Voltar ao Início</button>
+    <div class="sec-label fade1">Contacto</div>
+    <h2 class="sec-title fade2">Fazer Pedido</h2>
+    <p class="sec-desc fade3">Preencha o formulário abaixo. A nossa equipa entrará em contacto para dar seguimento ao seu pedido.</p>
+
+    <div class="fade4 contact-layout">
+      <div>
+        <div class="cinfo">
+          <div class="cinfo-icon">📱</div>
+          <div><div class="cinfo-label">WhatsApp / Telefone</div><div class="cinfo-val">+244 955 008 164</div></div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">✉️</div>
+          <div><div class="cinfo-label">E-mail</div><div class="cinfo-val">fabrimeba01@gmail.com</div></div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">📍</div>
+          <div><div class="cinfo-label">Localização</div><div class="cinfo-val">Luanda, Angola</div></div>
+        </div>
+        <div style="margin-top:8px">
+          <a href="https://wa.me/244955008164" target="_blank" class="btn-p" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.51 5.815L0 24l6.337-1.499A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.369l-.36-.213-3.722.879.937-3.626-.235-.373A9.773 9.773 0 012.182 12c0-5.419 4.399-9.818 9.818-9.818 5.42 0 9.818 4.399 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+            Chamar no WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="req-form">
+        <div class="frow">
+          <div class="fg"><label>Nome completo</label><input type="text" id="f-nome" placeholder="O seu nome"></div>
+          <div class="fg"><label>Telefone / WhatsApp</label><input type="tel" id="f-tel" placeholder="+244 ..."></div>
+        </div>
+        <div class="fg"><label>E-mail</label><input type="email" id="f-email" placeholder="email@exemplo.com"></div>
+        <div class="fg">
+          <label>Tipo de Serviço</label>
+          <select id="f-tipo">
+            <option value="">Seleccione o serviço...</option>
+            <option value="Secretariado">Secretariado Social</option>
+            <option value="Formação">Formação Profissional</option>
+            <option value="Transporte">Transporte / Logística de Carga</option>
+            <option value="Visto / Viagem">Visto / Agendamento de Viagem</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <div class="fg"><label>Descreva o seu pedido</label><textarea id="f-msg" placeholder="Explique o que precisa. Ex: nome do curso, tipo de carga, destino, quantidade..."></textarea></div>
+        <button class="btn-p" onclick="submitForm()">Enviar Pedido →</button>
+        <div class="success-box" id="success-box">
+          ✅ Pedido enviado com sucesso! A nossa equipa entrará em contacto brevemente.
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="fbrand"><strong>FMB COURSE LDA</strong><span>Secretariado Social · Mão de Obra · Formação</span></div>
+    <nav class="flinks">
+      <a href="#" onclick="showPage('home')">Início</a>
+      <a href="#" onclick="showPage('secretariado')">Secretariado</a>
+      <a href="#" onclick="showPage('formacao')">Formação</a>
+      <a href="#" onclick="showPage('transporte')">Transporte</a>
+    </nav>
+    <p class="fcopy">© 2026 FMB Course LDA · Luanda, Angola</p>
+  </footer>
+</div>
+
+<!-- ======================== RECRUTAMENTO ======================== -->
+<div class="page" id="page-recrutamento">
+  <section class="sec">
+    <button class="back-btn" onclick="showPage('home')">← Voltar ao Início</button>
+    <div class="sec-label fade1">Oportunidades</div>
+    <h2 class="sec-title fade2">Recrutamento de<br>Formadores</h2>
+    <p class="sec-desc fade3">A Fabrimeba está sempre à procura de formadores qualificados e profissionais experientes para integrar a nossa equipa. Se tem conhecimento técnico e paixão por ensinar, junte-se a nós.</p>
+
+
+
+    <!-- REQUISITOS -->
+    <div style="margin-bottom:48px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;display:flex;align-items:center;gap:10px">
+        📋 O Que Valorizamos
+        <span style="flex:1;height:1px;background:rgba(0,180,216,.2);display:block"></span>
+      </div>
+      <div class="meth-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+        <div class="meth-card">
+          <div class="meth-icon">🎓</div>
+          <h3>Formação Académica</h3>
+          <p>Certificado ou diploma na área de actuação técnica ou pedagógica.</p>
+        </div>
+        <div class="meth-card">
+          <div class="meth-icon">🏭</div>
+          <h3>Experiência Industrial</h3>
+          <p>Experiência prática no sector de Oil & Gas, mineração ou construção.</p>
+        </div>
+        <div class="meth-card">
+          <div class="meth-icon">🗣️</div>
+          <h3>Capacidade Pedagógica</h3>
+          <p>Aptidão para transmitir conhecimentos de forma clara e prática.</p>
+        </div>
+        <div class="meth-card">
+          <div class="meth-icon">📄</div>
+          <h3>Documentação</h3>
+          <p>CV actualizado, certificados e documentos de identificação válidos.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA WHATSAPP -->
+    <div style="background:rgba(0,180,216,.06);border:1px solid rgba(0,180,216,.2);border-radius:10px;padding:36px;text-align:center;max-width:560px">
+      <div style="font-size:2.5rem;margin-bottom:12px">👷</div>
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;text-transform:uppercase;margin-bottom:10px">Candidate-se Agora</h3>
+      <p style="color:rgba(255,255,255,.55);font-size:14px;line-height:1.7;margin-bottom:24px">
+        Envie o seu CV e uma breve apresentação pelo WhatsApp.<br>
+        A nossa equipa entrará em contacto para agendar uma entrevista.
+      </p>
+      <a href="https://wa.me/244993318318?text=Ol%C3%A1%2C%20gostaria%20de%20me%20candidatar%20como%20formador%20na%20Fabrimeba.%20Segue%20o%20meu%20CV." 
+         target="_blank" class="btn-p" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:15px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.51 5.815L0 24l6.337-1.499A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.369l-.36-.213-3.722.879.937-3.626-.235-.373A9.773 9.773 0 012.182 12c0-5.419 4.399-9.818 9.818-9.818 5.42 0 9.818 4.399 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+        Enviar CV pelo WhatsApp
+      </a>
+      <p style="margin-top:16px;font-size:13px;color:rgba(255,255,255,.35)">+244 993 318 318</p>
+    </div>
+  </section>
+  <footer>
+    <div class="fbrand"><strong>FMB COURSE LDA</strong><span>Secretariado Social · Mão de Obra · Formação</span></div>
+    <nav class="flinks">
+      <a href="javascript:void(0)" onclick="showPage('home')">Início</a>
+      <a href="javascript:void(0)" onclick="showPage('secretariado')">Secretariado</a>
+      <a href="javascript:void(0)" onclick="showPage('formacao')">Formação</a>
+      <a href="javascript:void(0)" onclick="showPage('transporte')">Transporte</a>
+      <a href="javascript:void(0)" onclick="showPage('pedido')">Fazer Pedido</a>
+    </nav>
+    <p class="fcopy">© 2026 FMB Course LDA · Luanda, Angola</p>
+  </footer>
+</div>
+
+
+<!-- WHATSAPP FAB -->
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bn-item active" id="bn-home" onclick="showPage('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Início
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" id="bn-secretariado" onclick="showPage('secretariado')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+    </svg>
+    Secret.
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" id="bn-formacao" onclick="showPage('formacao')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+    </svg>
+    Formação
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" id="bn-transporte" onclick="showPage('transporte')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+    </svg>
+    Transporte
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" id="bn-recrutamento" onclick="showPage('recrutamento')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+    </svg>
+    Recrut.
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" id="bn-pedido" onclick="showPage('pedido')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    </svg>
+    Pedido
+    <div class="bn-dot"></div>
+  </button>
+</nav>
+
+<a class="wa-fab" href="https://wa.me/244955008164" target="_blank" title="WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.51 5.815L0 24l6.337-1.499A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.369l-.36-.213-3.722.879.937-3.626-.235-.373A9.773 9.773 0 012.182 12c0-5.419 4.399-9.818 9.818-9.818 5.42 0 9.818 4.399 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>
+</a>
+
+<script>
+// Hide desktop nav on mobile immediately
+(function(){
+  function checkNav(){
+    var nl = document.getElementById('navLinks');
+    var ham = document.getElementById('ham');
+    if(!nl || !ham) return;
+    if(window.innerWidth > 860){
+      nl.style.display = 'flex';
+      ham.style.display = 'none';
+    } else {
+      nl.style.display = 'none';
+      ham.style.display = 'flex';
+    }
+  }
+  // Run on DOM ready
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', checkNav);
+  } else {
+    checkNav();
+  }
+  window.addEventListener('resize', checkNav);
+})();
+
+function showPage(id, preselect) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  if (pg) { pg.classList.add('active'); }
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  // close mobile menu
+  document.getElementById('navDrawer').classList.remove('open');
+  document.getElementById('ham').classList.remove('open');
+  // update bottom nav active
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  const bn = document.getElementById('bn-' + id);
+  if (bn) bn.classList.add('active');
+  // preselect form
+  if (preselect) {
+    const sel = document.getElementById('f-tipo');
+    if (sel) {
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === preselect) { sel.selectedIndex = i; break; }
+      }
+    }
+  }
+}
+
+function toggleMenu() {
+  document.getElementById('navDrawer').classList.toggle('open');
+  document.getElementById('ham').classList.toggle('open');
+}
+
+function submitForm() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const tipo = document.getElementById('f-tipo').value;
+  if (!nome || !tipo) {
+    alert('Por favor preencha o nome e seleccione o tipo de serviço.');
+    return;
+  }
+  document.getElementById('success-box').style.display = 'block';
+  document.getElementById('f-nome').value = '';
+  document.getElementById('f-tel').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-tipo').selectedIndex = 0;
+  document.getElementById('f-msg').value = '';
+  setTimeout(() => { document.getElementById('success-box').style.display = 'none'; }, 6000);
+}
+</script>
+</body>
+</html>
